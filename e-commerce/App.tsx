@@ -1,6 +1,5 @@
-import {StatusBar} from 'expo-status-bar';
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {Provider as PaperPrivider} from "react-native-paper";
 import AuthScreen from "./src/screens/Auth";
 
