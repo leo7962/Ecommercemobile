@@ -5,7 +5,7 @@ const formStyles = StyleSheet.create({
     input: {
         marginBottom: 20
     },
-    btnSucces: {
+    btnSuccess: {
         padding: 5,
         backgroundColor: Colors.primary,
     },
