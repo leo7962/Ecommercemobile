@@ -1,24 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View} from "react-native";
 import {Button, TextInput} from "react-native-paper";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {registerApi} from "../../api/user";
+import Toast from "react-native-root-toast";
 import {formStyles} from "../../styles";
 
 export default function RegisterForm(props: any) {
     const {changeForm} = props;
+    const [loading, setLoading] = useState(false);
 
     const formik = useFormik({
         initialValues: initialValues(),
         validationSchema: Yup.object().shape(validationSchema()),
         onSubmit: async (formData) => {
+            setLoading(true);
             try {
                 await registerApi(formData);
                 changeForm();
-                console.log("Ok");
             } catch (error) {
-                console.log(error);
+                setLoading(false);
+                Toast.show("Error al registrar al usuario" + error,{position: Toast.positions.CENTER});
             }
         }
     });
@@ -38,7 +41,7 @@ export default function RegisterForm(props: any) {
                        onChangeText={(text) => formik.setFieldValue("repeatPassword", text)}
                        value={formik.values.repeatPassword}
                        error={Boolean(formik.errors.repeatPassword)}/>
-            <Button mode={"contained"} style={formStyles.btnSuccess} onPress={formik.handleSubmit}>Registrarse</Button>
+            <Button mode={"contained"} style={formStyles.btnSuccess} onPress={formik.handleSubmit} loading={loading}>Registrarse</Button>
             <Button mode={"text"} style={formStyles.btnText} labelStyle={formStyles.btnTextLabel} onPress={changeForm}>Iniciar
                 sesión</Button>
         </View>

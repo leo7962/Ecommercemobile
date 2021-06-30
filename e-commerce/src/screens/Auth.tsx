@@ -4,17 +4,18 @@ import {Image, KeyboardAvoidingView, Platform, StyleSheet, View} from "react-nat
 import logo from "../../assets/logo.png";
 import {layoutStyle} from "../styles";
 import RegisterForm from "../components/Auth/RegisterForm";
+import LoginForm from "../components/Auth/LoginForm";
 
 
 export default function Auth() {
-    const [showLogin, setShowLogin] = useState(false);
+    const [showLogin, setShowLogin] = useState(true);
     const changeForm = () => setShowLogin(!showLogin);
 
     return (
         <View style={layoutStyle.container}>
             <Image style={styles.logo} source={logo}/>
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
-                {showLogin ? <RegisterForm>FormLogin</RegisterForm> : <RegisterForm changeForm={changeForm}/>}
+                {showLogin ? <LoginForm changeForm={changeForm} /> : <RegisterForm changeForm={changeForm}/>}
             </KeyboardAvoidingView>
         </View>
     );
