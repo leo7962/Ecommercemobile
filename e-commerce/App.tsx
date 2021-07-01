@@ -5,9 +5,10 @@ import AuthScreen from "./src/screens/Auth";
 import AuthContext from "./src/components/context/AuthContext";
 import {getTokenApi, removeTokenApi, setTokenApi} from "./src/api/token";
 import jwtDecode from "jwt-decode";
+import {IUser} from "./src/models/user";
 
 export default function App() {
-    const [auth, setAuth] = useState(undefined);
+    const [auth, setAuth] = useState<IUser | null>(null);
 
     useEffect(() => {
         (async () => {
