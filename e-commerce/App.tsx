@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, View} from 'react-native';
 import {Provider as PaperProvider} from "react-native-paper";
 import AuthScreen from "./src/screens/Auth";
 import AuthContext from "./src/components/context/AuthContext";
 import {getTokenApi, removeTokenApi, setTokenApi} from "./src/api/token";
 import jwtDecode from "jwt-decode";
 import {IUser} from "./src/models/user";
+import AppNavigation from "./src/navigation/AppNavigation";
 
 export default function App() {
     const [auth, setAuth] = useState<IUser | null>(null);
@@ -52,8 +52,7 @@ export default function App() {
     return (
         <AuthContext.Provider value={authData}>
             <PaperProvider>
-                {auth ? (<View style={{flex: 1, justifyContent: "center", alignItems: "center"}}><Button
-                    title={"cerrar sesión"} onPress={authData.logout}/></View>) : (<AuthScreen/>)}
+                {auth ? (<AppNavigation/>) : (<AuthScreen/>)}
             </PaperProvider>
         </AuthContext.Provider>
     );
