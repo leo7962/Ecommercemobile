@@ -1,13 +1,59 @@
-import React, {useState} from 'react';
-import {Text} from 'react-native';
-import {Provider as PaperPrivider} from "react-native-paper";
+import React, {useEffect, useMemo, useState} from 'react';
+import {Button, View} from 'react-native';
+import {Provider as PaperProvider} from "react-native-paper";
 import AuthScreen from "./src/screens/Auth";
+import AuthContext from "./src/components/context/AuthContext";
+import {getTokenApi, removeTokenApi, setTokenApi} from "./src/api/token";
+import jwtDecode from "jwt-decode";
 
 export default function App() {
     const [auth, setAuth] = useState(undefined);
+
+    useEffect(() => {
+        (async () => {
+            const token = await getTokenApi();
+            if (token) {
+                setAuth({
+                    token,
+                    idUser: jwtDecode(token).id
+                });
+            } else {
+                setAuth(null);
+            }
+        })()
+    }, []);
+
+    const login = (user: any) => {
+        setTokenApi(user.jwt);
+        setAuth({
+            token: user.jwt,
+            idUser: user.user.id
+        });
+    };
+
+    const logout = () => {
+        if (auth) {
+            removeTokenApi();
+            setAuth(null);
+        }
+    }
+
+    const authData = useMemo(() => ({
+            auth,
+            login,
+            logout,
+        }),
+        [auth]
+    );
+
+    if (auth === undefined) return null;
+
     return (
-        <PaperPrivider>
-            {auth ? <Text>Zona de Usuarios</Text> : <AuthScreen/>}
-        </PaperPrivider>
+        <AuthContext.Provider value={authData}>
+            <PaperProvider>
+                {auth ? (<View style={{flex: 1, justifyContent: "center", alignItems: "center"}}><Button
+                    title={"cerrar sesión"} onPress={authData.logout}/></View>) : (<AuthScreen/>)}
+            </PaperProvider>
+        </AuthContext.Provider>
     );
 }

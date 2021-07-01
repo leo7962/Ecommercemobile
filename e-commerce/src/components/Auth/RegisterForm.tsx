@@ -21,7 +21,7 @@ export default function RegisterForm(props: any) {
                 changeForm();
             } catch (error) {
                 setLoading(false);
-                Toast.show("Error al registrar al usuario" + error,{position: Toast.positions.CENTER});
+                Toast.show("Error al registrar al usuario" + error, {position: Toast.positions.CENTER});
             }
         }
     });
@@ -30,7 +30,7 @@ export default function RegisterForm(props: any) {
         <View>
             <TextInput label="Email" style={formStyles.input}
                        onChangeText={(text) => formik.setFieldValue("email", text)} value={formik.values.email}
-                       error={Boolean(formik.errors.email)}/>
+                       error={Boolean(formik.errors.email)} keyboardType={"email-address"} autoCapitalize="none"/>
             <TextInput label="Nombre de usuario" style={formStyles.input}
                        onChangeText={(text) => formik.setFieldValue("username", text)} value={formik.values.username}
                        error={Boolean(formik.errors.username)}/>
@@ -41,7 +41,8 @@ export default function RegisterForm(props: any) {
                        onChangeText={(text) => formik.setFieldValue("repeatPassword", text)}
                        value={formik.values.repeatPassword}
                        error={Boolean(formik.errors.repeatPassword)}/>
-            <Button mode={"contained"} style={formStyles.btnSuccess} onPress={formik.handleSubmit} loading={loading}>Registrarse</Button>
+            <Button mode={"contained"} style={formStyles.btnSuccess} onPress={formik.handleSubmit}
+                    loading={loading}>Registrarse</Button>
             <Button mode={"text"} style={formStyles.btnText} labelStyle={formStyles.btnTextLabel} onPress={changeForm}>Iniciar
                 sesión</Button>
         </View>
