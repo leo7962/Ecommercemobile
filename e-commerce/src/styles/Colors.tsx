@@ -5,7 +5,7 @@ const Colors = {
     fontLight: "#fff",
     // Background
     bgLight: "#fff",
-    bfDark: "#16222b",
+    bgDark: "#16222b",
 };
 
 export default Colors;
