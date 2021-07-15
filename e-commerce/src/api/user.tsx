@@ -36,3 +36,20 @@ export async function loginApi(formData: any){
         return null;
     }
 }
+
+export async function getMeApi(token: any) {
+    try {
+        const url = `${API_URL}/users/me`;
+        const params = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        const response = await fetch(url, params);
+        return await response.json();
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
