@@ -34,11 +34,11 @@ export default function Menu() {
                 />
                 <List.Item title={"Cambiar e-mail"} description={"Actualiza o cambia el e-mail de tu cuenta"}
                            left={(props) => <List.Icon {...props} icon={"at"}/>}
-                           onPress={() => console.log("Ir a cambiar el e-mail")}
+                           onPress={() => navigation.navigate("change-email")}
                 />
                 <List.Item title={"Cambiar UserName"} description={"Cambia el userName de tu cuenta"}
                            left={(props) => <List.Icon {...props} icon={"sim"}/>}
-                           onPress={() => console.log("Ir a cambiar el UserName")}
+                           onPress={() => navigation.navigate("change-username")}
                 />
                 <List.Item title={"Cambiar contraseña"} description={"Cambia la contraseña de tu cuenta"}
                            left={(props) => <List.Icon {...props} icon={"key"}/>}

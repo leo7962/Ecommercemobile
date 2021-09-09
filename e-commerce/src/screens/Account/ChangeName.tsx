@@ -1,32 +1,45 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from "react-native";
 import {TextInput, Button} from "react-native-paper";
 import * as Yup from "yup";
-import {formStyles} from "../../styles";
 import {useFormik} from "formik";
-import {useFocusEffect} from "@react-navigation/native";
-import {getMeApi} from "../../api/user";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
+import {getMeApi, updateUserApi} from "../../api/user";
 import useAuth from "../../hooks/useAuth";
+import {formStyles} from "../../styles";
+import Toast from "react-native-root-toast";
 
 export default function ChangeName() {
+    const [loading, setLoading] = useState(false);
     const {auth} = useAuth();
+    const navigation = useNavigation();
 
     useFocusEffect(
         useCallback(() => {
-            (async () =>{
-                //TODO: valores pendientes por default aún no btenidos y pendiente de serializar.
+            (async () => {
                 const response = await getMeApi(auth.token);
-                console.log(response);
-            }) ()
+                if (response.name && response.lastname) {
+                    await formik.setFieldValue("name", response.name);
+                    await formik.setFieldValue("lastname", response.lastname);
+                }
+            })()
         }, [])
     )
 
     const formik = useFormik({
         initialValues: initialValues(),
         validationSchema: Yup.object(validationSchema()),
-        onSubmit: (formValue) => {
-            console.log("formulario enviado");
-            console.log(formValue);
+        onSubmit: async (formData) => {
+            setLoading(true);
+            try {
+                await updateUserApi(auth, formData);
+                navigation.goBack();
+            } catch (error) {
+                Toast.show("Error al actualizar los datos.", {
+                    position: Toast.positions.CENTER,
+                });
+                setLoading(false);
+            }
         },
     });
 
@@ -35,11 +48,16 @@ export default function ChangeName() {
         <View style={styles.container}>
             <TextInput label={"Nombre"} style={formStyles.input}
                        onChangeText={(text) => formik.setFieldValue("name", text)}
-                       value={formik.values.name} error={Boolean(formik.errors.name)}></TextInput>
+                       value={formik.values.name}
+                       error={Boolean(formik.errors.name)}></TextInput>
             <TextInput label={"Apellidos"} style={formStyles.input}
                        onChangeText={(text) => formik.setFieldValue("lastname", text)}
-                       value={formik.values.lastname} error={Boolean(formik.errors.lastname)}></TextInput>
-            <Button mode={"contained"} style={formStyles.btnSuccess} onPress={formik.handleSubmit}>Cambiar
+                       value={formik.values.lastname}
+                       error={Boolean(formik.errors.lastname)}></TextInput>
+            <Button mode={"contained"}
+                    style={formStyles.btnSuccess}
+                    onPress={formik.handleSubmit}
+                    loading={loading}>Cambiar
                 Nombre y apellidos</Button>
         </View>
     );

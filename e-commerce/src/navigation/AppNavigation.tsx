@@ -22,7 +22,7 @@ export default function AppNavigation() {
                 <Tab.Screen name={"home"} component={Home} options={{title: "Inicio"}}/>
                 <Tab.Screen name={"favorites"} component={Favorites} options={{title: "Favoritos"}}/>
                 <Tab.Screen name={"cart"} component={Cart} options={{title: "Carrito"}}/>
-                <Tab.Screen name={"account"} component={AccountStack} options={{title: "Mi cuenta"}}/>
+                <Tab.Screen name={"accountStack"} component={AccountStack} options={{title: "Mi cuenta"}}/>
             </Tab.Navigator>
         </NavigationContainer>
     );
@@ -40,7 +40,7 @@ function setIcon(route: any, routeStatus: any) {
         case "cart":
             iconName = "cart";
             break;
-        case "account":
+        case "accountStack":
             iconName = "menu";
             break;
         default:
